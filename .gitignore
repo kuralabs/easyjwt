@@ -1,0 +1,14 @@
+__pycache__
+
+# Tox
+.tox/*
+.cache/*
+
+# Packages
+*.egg
+*.egg-info
+dist/*
+build/*
+
+# Misc
+*~
