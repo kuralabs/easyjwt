@@ -26,6 +26,7 @@ __version__ = '1.0.0'
 
 from time import time
 from re import compile
+from copy import deepcopy
 from logging import getLogger
 from base64 import b64encode, b64decode
 from zlib import compress, decompress, Z_BEST_COMPRESSION
@@ -194,7 +195,7 @@ class JWTPie:
 
     def encrypt(self, data, expires_in_s=None):
         """
-        Create an encrypted, signed and possible compressed JSON Web Token
+        Create an encrypted, signed and compressed JSON Web Token
         (JWT).
 
         :param dict data: Arbitrary data to encrypt and sign in a JWT.
@@ -202,7 +203,7 @@ class JWTPie:
          If None is given, the default setup in the class constructor will be
          used.
 
-        :return: Encrypted and signed, and possible compressed JWT.
+        :return: Encrypted, signed, and compressed JWT.
         :rtype: str
         """
         assert isinstance(data, dict)
@@ -274,13 +275,36 @@ class JWTPie:
 
     def decrypt(self, encryptedserial):
         """
-        Decrypt and verify signature, and possibly decompress, a previously
+        Decrypt, verify signature, and decompress, a previously
         generated JSON Web Token (JWT).
+
+        Notice this is equivalent to::
+
+            decrypt_with_metadata(encryptedserial)[0]
 
         :param str encryptedserial: A JWT previously generated with encrypt().
 
-        :return: Arbitrary user data originally store in token.
+        :return: Arbitrary user data originally stored in the token.
         :rtype: dict
+
+        :raises jwcrypto.jwt.JWTExpired: If token expired.
+        :raises jwcrypto.jwe.InvalidJWEData: If unable to decrypt or verify
+         signature.
+        """
+        # Obtain data and metadata, but return only data
+        data, _ = self.decrypt_with_metadata(encryptedserial)
+        return data
+
+    def decrypt_with_metadata(self, encryptedserial):
+        """
+        This is like :meth:`decrypt` but it also returns the token metadata.
+
+        :param str encryptedserial: A JWT previously generated with encrypt().
+
+        :return: A tuple with two dictionaries: One with the arbitrary user
+         data originally stored in the token, and the other with token metadata
+         (JWT claims).
+        :rtype: (dict, dict)
 
         :raises jwcrypto.jwt.JWTExpired: If token expired.
         :raises jwcrypto.jwe.InvalidJWEData: If unable to decrypt or verify
@@ -312,7 +336,11 @@ class JWTPie:
         # Deserialize user data
         data = loads(dataserial)
 
-        return data
+        # Get a copy of the metadata, but remove 'dta'
+        metadata = deepcopy(signedclaims)
+        del metadata['dta']
+
+        return data, metadata
 
     @classmethod
     def validate(cls, token):
