@@ -141,6 +141,16 @@ the secure cryptography_ library.
 Changelog
 =========
 
+1.1.0 (2021-06-08)
+------------------
+
+New
+~~~
+
+- New method ``decrypt_with_metadata()`` that will return the encrypted data
+  along with the standard JWT claims.
+
+
 1.0.0 (2021-06-01)
 ------------------
 

@@ -21,12 +21,11 @@ Easily encrypt and decrypt JWT tokens.
 
 __author__ = 'KuraLabs S.R.L'
 __email__ = 'info@kuralabs.io'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 from time import time
 from re import compile
-from copy import deepcopy
 from logging import getLogger
 from base64 import b64encode, b64decode
 from zlib import compress, decompress, Z_BEST_COMPRESSION
@@ -195,7 +194,7 @@ class JWTPie:
 
     def encrypt(self, data, expires_in_s=None):
         """
-        Create an encrypted, signed and compressed JSON Web Token
+        Create an encrypted, signed and possibly compressed JSON Web Token
         (JWT).
 
         :param dict data: Arbitrary data to encrypt and sign in a JWT.
@@ -203,7 +202,7 @@ class JWTPie:
          If None is given, the default setup in the class constructor will be
          used.
 
-        :return: Encrypted, signed, and compressed JWT.
+        :return: Encrypted, signed and possibly compressed JWT.
         :rtype: str
         """
         assert isinstance(data, dict)
@@ -275,7 +274,7 @@ class JWTPie:
 
     def decrypt(self, encryptedserial):
         """
-        Decrypt, verify signature, and decompress, a previously
+        Decrypt, verify signature, and possibly decompress, a previously
         generated JSON Web Token (JWT).
 
         Notice this is equivalent to::
@@ -291,7 +290,6 @@ class JWTPie:
         :raises jwcrypto.jwe.InvalidJWEData: If unable to decrypt or verify
          signature.
         """
-        # Obtain data and metadata, but return only data
         data, _ = self.decrypt_with_metadata(encryptedserial)
         return data
 
@@ -336,9 +334,13 @@ class JWTPie:
         # Deserialize user data
         data = loads(dataserial)
 
-        # Get a copy of the metadata, but remove 'dta'
-        metadata = deepcopy(signedclaims)
-        del metadata['dta']
+        # Gather standard claims as metadata
+        metadata = {
+            'iss': signedclaims['iss'],
+            'iat': signedclaims['iat'],
+            'nbf': signedclaims['nbf'],
+            'exp': signedclaims['exp'],
+        }
 
         return data, metadata
 
