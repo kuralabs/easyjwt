@@ -1,6 +1,8 @@
-===============================================
+==============================================
 jwtpie - Easily encrypt and decrypt JWT tokens
-===============================================
+==============================================
+
+JWT easy as pie.
 
 jwtpie is a highly opinionated library that makes encrypting and decrypting
 JWT tokes super easy. Perfect addition to your API backends.
@@ -91,9 +93,21 @@ To generate a private key execute:
 
 Or launch the interactive wizard::
 
-    python3 -m jwtpie
+    $ python3 -m jwtpie
 
-**THIS IS A SECRET!**
+    1. Craft a session.
+    2. Generate a new encryption or signing key.
+
+    What do you need? 2
+    Size: 256
+
+    Your key:
+
+    R5Co9mHaxURSzhryvvx8JqgpFLinhvd6L3rb2TxRx7o
+
+    Bye!
+
+**KEYS ARE SECRET!**
 
 Save it in your secret management system!
 
@@ -103,7 +117,7 @@ Save it in your secret management system!
 
 jwtpie is opinionated because it selects the signing and encryption algorithms
 for you. If you need to change this or change advanced parameters like the
-leeway please read the documentation if the docstring of the JWTPie class.
+leeway please read the documentation in the docstring of the JWTPie class.
 
 
 Repository

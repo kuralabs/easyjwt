@@ -116,10 +116,6 @@ setup(
     install_requires=[
         # JWT cryptography for session management
         'jwcrypto',
-
-        # Bad dependency in jwcrypto 0.8
-        # https://github.com/latchset/jwcrypto/issues/206
-        'six',
     ],
 
     # Packages
