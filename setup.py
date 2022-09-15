@@ -128,6 +128,7 @@ setup(
         'Easily encode and decode JWT tokens'
     ),
     long_description=read('README.rst'),
+    long_description_content_type='text/x-rst',
     url='https://github.com/kuralabs/jwtpie',
     keywords='jwtpie',
 
