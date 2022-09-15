@@ -141,6 +141,17 @@ the secure cryptography_ library.
 Changelog
 =========
 
+1.2.0 (2022-09-15)
+------------------
+
+Changes
+~~~~~~~
+
+- Updated to support jwcrypto 1.4 that addresses CVE-2022-3102.
+  See https://github.com/latchset/jwcrypto/releases/tag/v1.4.0 for more
+  information.
+
+
 1.1.0 (2021-06-08)
 ------------------
 
