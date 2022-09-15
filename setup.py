@@ -115,7 +115,7 @@ setup(
     # Dependencies
     install_requires=[
         # JWT cryptography for session management
-        'jwcrypto',
+        'jwcrypto>=1.4',
     ],
 
     # Packages
